@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
-import TodoItem from "./Todoitem";
+import TodoItem from "./TodoItem";
 
 describe('<TodoItem />', () => {
     const sampleTodo = {
@@ -24,5 +24,13 @@ describe('<TodoItem />', () => {
         const {span, button} = setup();
         expect(span).toBeTruthy()
         expect(button).toBeTruthy()
+    });
+    it('shows line-through on span when done is true', () => {
+        const { span } = setup({ todo: {...sampleTodo, done: true}});
+        expect(span).toHaveStyle('text-decoration: line-through;');
+    })
+    it('shows line-through on span when done is false', () => {
+        const { span } = setup({ todo: {...sampleTodo, done: false}});
+        expect(span).not.toHaveStyle('text-decoration: line-through;');
     })
 })
