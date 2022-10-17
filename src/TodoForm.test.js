@@ -4,21 +4,36 @@ import TodoForm from "./Todoform";
 
 
 describe('<TodoForm />', () => {
+    const setup = (props = {}) => {
+        const utils = render(<TodoForm {...props} />)
+        const { getByText, getByPlaceholderText } = utils;
+        const input = getByPlaceholderText('할 일을 입력하세요')
+        const button = getByText('등록');
+        return {
+            ...utils,
+            input,
+            button,
+        }
+    }
     it('has input and button', () => {
-        const { getByText, getByPlaceholderText } = render(<TodoForm />);
-        getByPlaceholderText("할 일을 입력하세요");
-        getByText('등록');
+        // const { getByText, getByPlaceholderText } = render(<TodoForm />);
+        // getByPlaceholderText("할 일을 입력하세요");
+        // getByText('등록');
+        const { input, button } = setup();
+        expect(input).toBeTruthy()
+        expect(button).toBeTruthy()
     });
 
     it('changes input', () => {
-        const { getByPlaceholderText} = render(<TodoForm />);
-        const input = getByPlaceholderText('할 일을 입력하세요');
+
+        const {input} = setup();
         fireEvent.change(input, {
             target: {
                 value: 'TDD 배우기',
 
             }
         })
+        expect(input).toHaveAttribute('value', 'TDD 배우기')
     })
     it('calls onInsert and clears input', () => {
         const onInsert = jest.fn();
